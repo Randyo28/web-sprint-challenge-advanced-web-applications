@@ -40,12 +40,13 @@ const FormContainer = styled.form`
 
 const Login = () => {
 
-  const { push } = useHistory()
-
+  
   const [credentials, setCredentials] = useState({
     username: '',
     password: ''
-})
+  })
+  
+  const history = useHistory()
 
 const handleChange = (e) => {
   const { name, value } = e.target;
@@ -60,7 +61,7 @@ const handleSubmit = (e) => {
     axios.post('http://localhost:5000/api/login', credentials)
     .then(res => {
       localStorage.setItem('token', res.data.payload);
-      push('/protected')
+      history.push('/protected')
       console.log(res)
     })
     .catch(err => {
@@ -74,13 +75,17 @@ const handleSubmit = (e) => {
       <FormContainer onSubmit={handleSubmit}>
         <h1>Login</h1>
         <label>Username:
-          <input type='text' 
+          <input
+          data-testid="username"
+          type='text' 
           name='username' 
           value={credentials.username}
           onChange={handleChange}/>
         </label>
         <label>Password:
-          <input type='text' 
+          <input 
+          data-testid="password"
+          type='text' 
           name='password'
           value={credentials.password}
           onChange={handleChange}/>
