@@ -16,7 +16,8 @@ const FormContainer = styled.form`
   height: 50%;
   margin: 5rem auto;
   padding:2rem;
-  background-color: yellow;
+  background-color: rgb(0,0,0,0.5);
+  color:white;
   border-radius: 10%;
   display: flex;
   flex-flow: column;
@@ -25,6 +26,15 @@ const FormContainer = styled.form`
 
   input{
     margin-left:1rem;
+    padding: 0 1rem;
+  }
+
+  button{
+    width:50%;
+    margin: 0 auto;
+    border-radius: 10%;
+    padding: 0.5rem 1rem;
+    cursor:pointer;
   }
 `
 
