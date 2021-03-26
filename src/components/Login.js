@@ -1,21 +1,84 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
+import styled from 'styled-components';
+import bubbles from '../bubble-img.jpeg';
+import { useHistory } from 'react-router-dom';
+
+const LoginContainer = styled.div`
+  width: 100%;
+  padding:1.3rem;
+  background-image: url(${bubbles});
+  height: 90vh;
+`
+
+const FormContainer = styled.form`
+  width: 30%;
+  height: 50%;
+  margin: 5rem auto;
+  padding:2rem;
+  background-color: yellow;
+  border-radius: 10%;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-evenly;
+  font-size:1.3rem;
+
+  input{
+    margin-left:1rem;
+  }
+`
 
 const Login = () => {
-  // make a post request to retrieve a token from the api
-  // when you have handled the token, navigate to the BubblePage route
 
-  useEffect(()=>{
+  const { push } = useHistory()
+
+  const [credentials, setCredentials] = useState({
+    username: '',
+    password: ''
+})
+
+const handleChange = (e) => {
+  const { name, value } = e.target;
+
+  setCredentials({...credentials, [name]: value})
+}
+  
+const handleSubmit = (e) => {
+  e.preventDefault()
     // make a post request to retrieve a token from the api
     // when you have handled the token, navigate to the BubblePage route
-  });
+    axios.post('http://localhost:5000/api/login', credentials)
+    .then(res => {
+      localStorage.setItem('token', res.data.payload);
+      push('/protected')
+      console.log(res)
+    })
+    .catch(err => {
+      console.log('Error ', err.response)
+    })
+}
+
   return (
-    <>
-      <h1>
-        Welcome to the Bubble App!
-        <p>Build a login page here</p>
-      </h1>
-    </>
+    <div style={{width: '100%'}}>
+    <LoginContainer>
+      <FormContainer onSubmit={handleSubmit}>
+        <h1>Login</h1>
+        <label>Username:
+          <input type='text' 
+          name='username' 
+          value={credentials.username}
+          onChange={handleChange}/>
+        </label>
+        <label>Password:
+          <input type='text' 
+          name='password'
+          value={credentials.password}
+          onChange={handleChange}/>
+        </label>
+        <button>Login</button>
+      </FormContainer>
+    </LoginContainer>
+    </div>
   );
 };
 
